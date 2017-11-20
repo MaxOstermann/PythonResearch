@@ -42,4 +42,7 @@ pprint(a)
 a2 = simplex(a)
 pprint(a2)
 a3 = simplex(a2)
+a3 = a3.col_insert(5, Matrix([0, 0, 0]))
+a3 = a3.row_insert(2, Matrix([[-Rational(12,17), 0, 0, -Rational(16,17), -Rational(5,17), 1]]))
 pprint(a3)
+
