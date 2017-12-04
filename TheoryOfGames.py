@@ -29,7 +29,6 @@ def get_resh_row(a, n, m_ind):
     for i in range(n - 1):
         ss = a[i, 0] / a[i, m_ind]
         if ss < s_min:
-            #print(ss)
             s_min = ss
             s_ind = i
     return s_min, s_ind
@@ -58,13 +57,32 @@ def get_new_table(a, n, m, m_ind, s_ind):
         for j in range(m):
             if i != s_ind:
                 a1[i, j] = a[i, j] - ai * a[s_ind, j] / aij
-                #print(a[i, j]," - ",ai," * ",a[s_ind, j]," / ",aij)
             else:
                 a1[i, j] = a[i, j] / aij
 
 
     return a1
 
+
+def add_cond(a, n, m):
+    max_value = 0
+    val = 0
+    st = 0
+    for i in range(n):
+        if a[i, 0]-floor(a[i, 0]) > max_value:
+            max_value = ceil(a[i, 0])-a[i, 0]
+            val = a[i,0]
+            st = i
+    aa =  Matrix([0])
+    for i in range(1, m-1):
+        aa = aa.row_insert(i, Matrix([[0]]))
+    pprint(aa)
+    aaa = Matrix([-val])
+    for i in range(1, m):
+        aaa = aaa.col_insert(i, Matrix([-1*(a[st, i]-floor(a[st, i]))]))
+    aaa = aaa.col_insert(m, Matrix([1]))
+    pprint(aaa)
+    return  max_value, st
 
 def simplex(a, n, m):
     m_min, m_ind = get_resh_col(a, n, m)
@@ -131,6 +149,7 @@ pprint(a6)
 a7, m_ind, s_ind = simplex2(a6, 7, 9)
 xx[s_ind] = m_ind
 pprint(a7)
+print('add_cond = ',add_cond(a7, 7, 9))
 a7 = a7.col_insert(9, Matrix([0, 0, 0, 0, 0, 0, 0]))
 a7 = a7.row_insert(6, Matrix([[-Integer(2)/Integer(3), 0, 0, 0, 0, 0, 0, -Integer(1)/Integer(2), -Integer(2)/Integer(3), 1]]))
 xx.append(1)
