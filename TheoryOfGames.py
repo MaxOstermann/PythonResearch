@@ -70,19 +70,22 @@ def add_cond(a, n, m):
     st = 0
     for i in range(n):
         if a[i, 0]-floor(a[i, 0]) > max_value:
-            max_value = ceil(a[i, 0])-a[i, 0]
+            max_value = a[i, 0]-floor(a[i, 0])
             val = a[i,0]
             st = i
+    print(max_value, val)
     aa =  Matrix([0])
-    for i in range(1, m-1):
+    for i in range(1, n):
         aa = aa.row_insert(i, Matrix([[0]]))
     pprint(aa)
-    aaa = Matrix([-val])
+    aaa = Matrix([-max_value])
     for i in range(1, m):
         aaa = aaa.col_insert(i, Matrix([-1*(a[st, i]-floor(a[st, i]))]))
     aaa = aaa.col_insert(m, Matrix([1]))
     pprint(aaa)
-    return  max_value, st
+    aaaa = a.col_insert(m, aa)
+    aaaa = aaaa.row_insert(n-1, aaa)
+    return  aaaa
 
 def simplex(a, n, m):
     m_min, m_ind = get_resh_col(a, n, m)
@@ -120,38 +123,33 @@ a3, m_ind, s_ind = simplex(a2, 3, 5)
 
 xx[s_ind] = m_ind
 pprint(a3)
-a3 = a3.col_insert(5, Matrix([0, 0, 0]))
-a3 = a3.row_insert(2, Matrix([[-Integer(12)/Integer(17), 0, 0, -Integer(16)/Integer(17), -Integer(5)/Integer(17), 1]]))
+a3 = add_cond(a3, 3, 5)
 xx.append(1)
 pprint(a3)
 a4, m_ind, s_ind = simplex2(a3, 4, 6)
 xx[s_ind] = m_ind
 print("lol")
 pprint(a4)
-a4 = a4.col_insert(6, Matrix([0, 0, 0, 0]))
-a4 = a4.row_insert(3, Matrix([[-Integer(3)/Integer(4), 0, 0, 0, -Integer(5)/Integer(16), -Integer(15)/Integer(16), 1]]))
+a4 = add_cond(a4, 4, 6)
 xx.append(1)
 pprint(a4)
 a5, m_ind, s_ind = simplex2(a4, 5, 7)
 xx[s_ind] = m_ind
 pprint(a5)
-a5 = a5.col_insert(7, Matrix([0, 0, 0, 0, 0]))
-a5 = a5.row_insert(4, Matrix([[-Integer(4)/Integer(5), 0, 0, 0, -Integer(2)/Integer(3), 0, -Integer(4)/Integer(15), 1]]))
+a5 = add_cond(a5, 5, 7)
 xx.append(1)
 pprint(a5)
 a6, m_ind, s_ind = simplex2(a5, 6, 8)
 xx[s_ind] = m_ind
 pprint(a6)
-a6 = a6.col_insert(8, Matrix([0, 0, 0, 0, 0, 0]))
-a6 = a6.row_insert(5, Matrix([[-Integer(4)/Integer(5), 0, 0, 0, 0, 0, -Integer(3)/Integer(5), 0, 1]]))
+a6 = add_cond(a6, 6, 8)
 xx.append(1)
 pprint(a6)
 a7, m_ind, s_ind = simplex2(a6, 7, 9)
 xx[s_ind] = m_ind
 pprint(a7)
 print('add_cond = ',add_cond(a7, 7, 9))
-a7 = a7.col_insert(9, Matrix([0, 0, 0, 0, 0, 0, 0]))
-a7 = a7.row_insert(6, Matrix([[-Integer(2)/Integer(3), 0, 0, 0, 0, 0, 0, -Integer(1)/Integer(2), -Integer(2)/Integer(3), 1]]))
+a7 = add_cond(a7, 7, 9)
 xx.append(1)
 pprint(a7)
 print(xx)
